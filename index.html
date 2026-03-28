@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Focus — Task Selector</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#0e0e0f" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-title" content="Focus" />
+</head>
+<body>
+
+  <div class="app">
+
+    <!-- Header -->
+    <header class="header">
+      <div class="header-inner">
+        <span class="logo">focus</span>
+        <nav class="nav">
+          <button class="nav-btn active" data-view="select">select</button>
+          <button class="nav-btn" data-view="tasks">tasks</button>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="main">
+
+      <!-- Select View -->
+      <section class="view active" id="view-select">
+        <div class="view-header">
+          <h1 class="view-title">What can you do right now?</h1>
+          <p class="view-subtitle">Pick how much time you have and we'll choose something for you.</p>
+        </div>
+        <div class="duration-grid">
+          <button class="duration-card" data-duration="30min">
+            <span class="duration-icon">⚡</span>
+            <span class="duration-label">30 minutes</span>
+            <span class="duration-hint">Quick win</span>
+            <span class="duration-count" id="count-30min"></span>
+          </button>
+          <button class="duration-card" data-duration="2h">
+            <span class="duration-icon">🔥</span>
+            <span class="duration-label">2 hours</span>
+            <span class="duration-hint">Deep work</span>
+            <span class="duration-count" id="count-2h"></span>
+          </button>
+          <button class="duration-card" data-duration="1day">
+            <span class="duration-icon">🌊</span>
+            <span class="duration-label">Full day</span>
+            <span class="duration-hint">Big push</span>
+            <span class="duration-count" id="count-1day"></span>
+          </button>
+        </div>
+
+        <!-- Selected Task Result -->
+        <div class="result-wrap" id="result-wrap">
+          <div class="result-card" id="result-card">
+            <div class="result-label">your task</div>
+            <h2 class="result-title" id="result-title"></h2>
+            <p class="result-desc" id="result-desc"></p>
+            <div class="result-actions" id="result-actions">
+              <button class="btn-ghost" id="result-pick-another">Pick another</button>
+              <button class="btn-success" id="result-mark-done">Mark as done</button>
+            </div>
+
+            <!-- Outcome form (hidden until Mark as done) -->
+            <div class="outcome-section" id="outcome-section">
+              <div class="outcome-divider"></div>
+              <p class="outcome-heading">How did it go? <span class="outcome-optional">optional</span></p>
+              <div class="form-group">
+                <textarea class="form-input form-textarea" id="outcome-note" placeholder="Notes on what you accomplished..." rows="2"></textarea>
+              </div>
+              <div class="form-group">
+                <input class="form-input" type="url" id="outcome-link" placeholder="Link (https://...)" />
+              </div>
+              <div class="form-group">
+                <label class="file-upload-label" for="outcome-image">
+                  <span id="file-upload-text">Attach a file</span>
+                  <input type="file" id="outcome-image" accept="image/*,video/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv" />
+                </label>
+                <span class="file-size-hint">Images and documents up to 5 MB · Videos up to 3 MB</span>
+              </div>
+              <div class="form-actions">
+                <button type="button" class="btn-ghost" id="outcome-cancel">Cancel</button>
+                <button type="button" class="btn-success" id="outcome-submit">Complete task ✓</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="result-empty" id="result-empty">
+            <p>No tasks for this duration.</p>
+            <p class="empty-hint">Add some in the Tasks tab first.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Tasks View -->
+      <section class="view" id="view-tasks">
+        <div class="view-header">
+          <h1 class="view-title">Your tasks</h1>
+          <p class="view-subtitle">Everything on your list.</p>
+        </div>
+
+        <!-- Inline Add Task Form -->
+        <div class="inline-form-wrap">
+          <form class="task-form" id="task-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="task-title">Title</label>
+                <input class="form-input" type="text" id="task-title" placeholder="What needs to be done?" required />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="task-desc">Description</label>
+                <textarea class="form-input form-textarea" id="task-desc" placeholder="Any extra details..." rows="2"></textarea>
+              </div>
+            </div>
+            <div class="form-bottom">
+              <div class="form-group">
+                <label class="form-label">How long?</label>
+                <div class="radio-group">
+                  <label class="radio-card">
+                    <input type="radio" name="duration" value="30min" required />
+                    <span class="radio-label">⚡ 30 min</span>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="duration" value="2h" />
+                    <span class="radio-label">🔥 2 hours</span>
+                  </label>
+                  <label class="radio-card">
+                    <input type="radio" name="duration" value="1day" />
+                    <span class="radio-label">🌊 1 day</span>
+                  </label>
+                </div>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn-primary">Add task</button>
+              </div>
+            </div>
+          </form>
+        </div>
+
+        <div class="tasks-toolbar">
+          <div class="filter-group">
+            <button class="filter-btn active" data-filter="all">All</button>
+            <button class="filter-btn" data-filter="30min">30 min</button>
+            <button class="filter-btn" data-filter="2h">2 hours</button>
+            <button class="filter-btn" data-filter="1day">1 day</button>
+          </div>
+        </div>
+        <div class="task-list" id="task-list">
+          <div class="empty-state" id="empty-state">
+            <p>No tasks yet.</p>
+            <p class="empty-hint">Add one to get started.</p>
+          </div>
+        </div>
+
+        <!-- Completed Section -->
+        <div class="completed-section" id="completed-section">
+          <div class="completed-header">
+            <span class="completed-title">Completed</span>
+            <span class="completed-count" id="completed-count"></span>
+          </div>
+          <div class="task-list" id="completed-list">
+            <div class="empty-state completed-empty">
+              <p>Nothing completed yet.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Task Detail Modal -->
+  <div class="modal-overlay" id="task-modal-overlay">
+    <div class="task-modal">
+      <div class="task-modal-header">
+        <span class="task-badge" id="modal-badge"></span>
+        <button class="modal-close" id="task-modal-close">&times;</button>
+      </div>
+      <h2 class="task-modal-title" id="modal-title"></h2>
+      <p class="task-modal-desc" id="modal-desc"></p>
+
+      <!-- Outcome display (completed tasks) -->
+      <div class="task-modal-outcome" id="modal-outcome"></div>
+
+      <!-- Mark as done (active tasks only) -->
+      <div class="modal-done-section" id="modal-done-section">
+        <div class="outcome-divider"></div>
+        <div class="modal-done-actions" id="modal-done-actions">
+          <button class="btn-success" id="modal-mark-done">Mark as done</button>
+        </div>
+        <div class="outcome-section" id="modal-outcome-section">
+          <p class="outcome-heading">How did it go? <span class="outcome-optional">optional</span></p>
+          <div class="form-group">
+            <textarea class="form-input form-textarea" id="modal-outcome-note" placeholder="Notes on what you accomplished..." rows="2"></textarea>
+          </div>
+          <div class="form-group">
+            <input class="form-input" type="url" id="modal-outcome-link" placeholder="Link (https://...)" />
+          </div>
+          <div class="form-group">
+            <label class="file-upload-label" for="modal-outcome-image">
+              <span id="modal-file-upload-text">Attach a file</span>
+              <input type="file" id="modal-outcome-image" accept="image/*,video/*,application/pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv" />
+            </label>
+            <span class="file-size-hint">Images and documents up to 5 MB · Videos up to 3 MB</span>
+          </div>
+          <div class="form-actions">
+            <button type="button" class="btn-ghost" id="modal-outcome-cancel">Cancel</button>
+            <button type="button" class="btn-success" id="modal-outcome-submit">Complete task ✓</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('./sw.js');
+    }
+  </script>
+</body>
+</html>
