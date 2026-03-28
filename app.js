@@ -11,6 +11,7 @@ function loadTasks() {
 
 function saveTasks(tasks) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  syncToSupabase(tasks); // background sync — no-op if not configured
 }
 
 function createTask(title, description, duration) {
@@ -471,4 +472,7 @@ outcomeSubmit.addEventListener('click', async () => {
 });
 
 // ── Init ──────────────────────────────────────────
-renderTasks();
+(async () => {
+  await syncFromSupabase(); // pull from cloud first (no-op if not configured)
+  renderTasks();
+})();
