@@ -1,9 +1,10 @@
-const CACHE = 'focus-v1';
+const CACHE = 'focus-v2';
 const FILES = [
   './',
   './index.html',
   './styles.css',
   './app.js',
+  './supabase-sync.js',
   './manifest.json',
   './icons/icon.svg',
 ];
