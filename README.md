@@ -13,7 +13,7 @@ A minimal task selector app designed for ADHD. Add tasks, let the app pick one f
 
 ## Live App
 
-[https://yourusername.github.io/focus](https://yourusername.github.io/focus)
+[https://andrefbatista.github.io/focus](https://andrefbatista.github.io/focus)
 
 ## Run it locally
 
